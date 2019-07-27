@@ -25,6 +25,13 @@ def test_int_mutate():
     assert copy != 42
 
 
+def test_evil_int_mutate():
+    assert 800 != 900
+    bastardize.int_mutate(800, 900, force=True)
+    assert 800 == 900
+    assert 400 + 400 != 800 # *evil laugh*
+
+
 def test_tuple_set_item():
     """
     If only you could do this with tuples...

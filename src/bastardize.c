@@ -27,16 +27,36 @@ static PyObject *int_copy(PyObject *self, PyObject *obj) {
 }
 
 
-static PyObject *int_mutate(PyObject *self, PyObject *args) {
+static PyObject *int_mutate(PyObject *self, PyObject *args, PyObject *kwargs) {
     PyObject *target;
     PyObject *newval;
+    int force = 0;
 
-    if(!PyArg_ParseTuple(args, "OO", &target, &newval))
+    static char *kwlist[] = { "target", "newval", "force" };
+
+    if(!PyArg_ParseTupleAndKeywords(args, kwargs, "OO|$p", kwlist, &target, &newval, &force)) {
         return NULL;
+    }
 
     if(Py_TYPE(target) != &PyLong_Type || Py_TYPE(newval) != &PyLong_Type) {
         PyErr_SetString(PyExc_TypeError, "Must be type int");
         return NULL;
+    }
+
+    if(!force) {
+        if(Py_REFCNT(target) > 3) {
+            /*
+             * If you just made a copy, you'll probably have refcnt=3.
+             * More is suspect...
+             */
+            const char message[256];
+            snprintf(message, 256,
+                "The refcnt of %d is already %lu, so you don't want to do this... "
+                "Or just set force=True to get rid of this error. What could go wrong?",
+                PyLong_AsLong(target), Py_REFCNT(target));
+            PyErr_SetString(PyExc_ValueError, message);
+            return NULL;
+        }
     }
 
     Py_SIZE(target) = Py_SIZE(newval);
@@ -77,7 +97,7 @@ static PyObject *tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs
 struct PyMethodDef methods[] = {
     { "get_refcnt", get_refcnt, METH_O, "" },
     { "int_copy", int_copy, METH_O, "" },
-    { "int_mutate", int_mutate, METH_VARARGS, "" },
+    { "int_mutate", (PyCFunction)int_mutate, METH_VARARGS | METH_KEYWORDS, "" },
     { "tuple_set_item", (PyCFunction)tuple_set_item, METH_VARARGS | METH_KEYWORDS, "" },
     { 0 },
 };
