@@ -19,14 +19,11 @@ def test_int_copy():
 
 
 def test_int_mutate():
-    """
-    Doing this is reassigning an int's value.
-    ints are used for lots of things in the libraries you import--beware...
-    """
-    assert 42 != 99
-    bastardize.int_mutate(42, 99)
-    assert 42 == 99
-    assert 10 + 32 == 99 # even this works
+    copy = bastardize.int_copy(42)
+    assert copy == 42
+    bastardize.int_mutate(copy, 99)
+    assert copy == 99
+    assert copy != 42
 
 
 def test_tuple_set_item():
