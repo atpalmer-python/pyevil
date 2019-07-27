@@ -18,11 +18,12 @@ def test_int_copy():
 
 
 def test_int_mutate():
-    copy = bastardize.int_copy(42)
-    assert copy == 42
-    bastardize.int_mutate(copy, 99)
-    assert copy == 99
-    assert copy != 42
+    one = bastardize.int_copy(1)
+    assert one == 1
+    bastardize.int_mutate(one, 2)
+    assert one != 1
+    assert one == 2
+    assert one + one == 4
 
 
 def test_evil_int_mutate():
