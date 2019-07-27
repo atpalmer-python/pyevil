@@ -8,6 +8,16 @@ def test_get_refcnt():
     assert refcnt == 3
 
 
+def test_int_copy():
+    """
+    If you're mutating ints, you might want copies...
+    """
+    newone = bastardize.int_copy(1)
+    assert newone == 1
+    assert bastardize.get_refcnt(newone) == 2
+    assert bastardize.get_refcnt(1) > 2
+
+
 def test_int_mutate():
     """
     Doing this is reassigning an int's value.

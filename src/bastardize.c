@@ -7,6 +7,26 @@ static PyObject *get_refcnt(PyObject *self, PyObject *obj) {
 }
 
 
+static PyObject *int_copy(PyObject *self, PyObject *obj) {
+    if(Py_TYPE(obj) != &PyLong_Type) {
+        PyErr_SetString(PyExc_TypeError, "ints only, please");
+        return NULL;
+    }
+
+    PyLongObject *longobj = (PyLongObject *)obj;
+
+    Py_ssize_t size = Py_SIZE(longobj);
+
+    PyLongObject *result = (PyLongObject *)_PyLong_New(size);
+
+    for(int i = 0; i < size; ++i) {
+        result->ob_digit[i] = longobj->ob_digit[i];
+    }
+
+    return (PyObject *)result;
+}
+
+
 static PyObject *int_mutate(PyObject *self, PyObject *args) {
     PyObject *target;
     PyObject *newval;
@@ -56,6 +76,7 @@ static PyObject *tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs
 
 struct PyMethodDef methods[] = {
     { "get_refcnt", get_refcnt, METH_O, "" },
+    { "int_copy", int_copy, METH_O, "" },
     { "int_mutate", int_mutate, METH_VARARGS, "" },
     { "tuple_set_item", (PyCFunction)tuple_set_item, METH_VARARGS | METH_KEYWORDS, "" },
     { 0 },
