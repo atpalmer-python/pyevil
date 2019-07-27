@@ -1,6 +1,12 @@
 #include <Python.h>
 
 
+static PyObject *get_refcnt(PyObject *self, PyObject *obj) {
+    Py_ssize_t refcnt = Py_REFCNT(obj);
+    return PyLong_FromLong(refcnt);
+}
+
+
 static PyObject *int_mutate(PyObject *self, PyObject *args) {
     PyObject *target;
     PyObject *newval;
@@ -49,6 +55,7 @@ static PyObject *tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs
 }
 
 struct PyMethodDef methods[] = {
+    { "get_refcnt", get_refcnt, METH_O, "" },
     { "int_mutate", int_mutate, METH_VARARGS, "" },
     { "tuple_set_item", (PyCFunction)tuple_set_item, METH_VARARGS | METH_KEYWORDS, "" },
     { 0 },

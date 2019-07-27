@@ -2,6 +2,12 @@ import pytest
 import bastardize
 
 
+def test_get_refcnt():
+    hopefully_unused = 10983647581
+    refcnt = bastardize.get_refcnt(hopefully_unused)
+    assert refcnt == 3
+
+
 def test_int_mutate():
     """
     Doing this is reassigning an int's value.
