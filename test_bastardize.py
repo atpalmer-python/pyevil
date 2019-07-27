@@ -27,6 +27,11 @@ def test_int_mutate():
 
 
 def test_evil_int_mutate():
+    """
+    Not impressed with mutating copies?
+    Why not mutate literals?
+    (If you're bold, try changing the value of 1 and see how many libraries you can break.)
+    """
     assert 800 != 900
     bastardize.int_mutate(800, 900, force=True)
     assert 800 == 900
