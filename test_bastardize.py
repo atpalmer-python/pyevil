@@ -14,8 +14,7 @@ def test_int_copy():
     """
     newone = bastardize.int_copy(1)
     assert newone == 1
-    assert bastardize.get_refcnt(newone) == 2
-    assert bastardize.get_refcnt(1) > 2
+    assert not (newone is 1)
 
 
 def test_int_mutate():
