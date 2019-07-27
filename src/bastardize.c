@@ -1,6 +1,26 @@
 #include <Python.h>
 
 
+static PyObject *int_mutate(PyObject *self, PyObject *args) {
+    PyObject *target;
+    PyObject *newval;
+
+    if(!PyArg_ParseTuple(args, "OO", &target, &newval))
+        return NULL;
+
+    if(Py_TYPE(target) != &PyLong_Type || Py_TYPE(newval) != &PyLong_Type) {
+        PyErr_SetString(PyExc_TypeError, "Must be type int");
+        return NULL;
+    }
+
+    Py_SIZE(target) = Py_SIZE(newval);
+    for(int i = 0; i < Py_SIZE(newval); ++i) {
+        ((PyLongObject *)target)->ob_digit[i] = ((PyLongObject *)newval)->ob_digit[i];
+    }
+
+    Py_RETURN_NONE;
+}
+
 static PyObject *tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs) {
     PyObject *tuple;
     PyObject *value;
@@ -29,6 +49,7 @@ static PyObject *tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs
 }
 
 struct PyMethodDef methods[] = {
+    { "int_mutate", int_mutate, METH_VARARGS, "" },
     { "tuple_set_item", (PyCFunction)tuple_set_item, METH_VARARGS | METH_KEYWORDS, "" },
     { 0 },
 };

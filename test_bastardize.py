@@ -2,6 +2,17 @@ import pytest
 import bastardize
 
 
+def test_int_mutate():
+    """
+    Doing this is reassigning an int's value.
+    ints are used for lots of things in the libraries you import--beware...
+    """
+    assert 42 != 99
+    bastardize.int_mutate(42, 99)
+    assert 42 == 99
+    assert 10 + 32 == 99 # even this works
+
+
 def test_tuple_set_item():
     """
     If only you could do this with tuples...
