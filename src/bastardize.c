@@ -1,12 +1,6 @@
 #include <Python.h>
 
 
-static PyObject *get_refcnt(PyObject *self, PyObject *obj) {
-    Py_ssize_t refcnt = Py_REFCNT(obj);
-    return PyLong_FromLong(refcnt);
-}
-
-
 static PyObject *int_copy(PyObject *self, PyObject *obj) {
     if(Py_TYPE(obj) != &PyLong_Type) {
         PyErr_SetString(PyExc_TypeError, "ints only, please");
@@ -95,7 +89,6 @@ static PyObject *tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs
 }
 
 struct PyMethodDef methods[] = {
-    { "get_refcnt", get_refcnt, METH_O, "" },
     { "int_copy", int_copy, METH_O, "" },
     { "int_mutate", (PyCFunction)int_mutate, METH_VARARGS | METH_KEYWORDS, "" },
     { "tuple_set_item", (PyCFunction)tuple_set_item, METH_VARARGS | METH_KEYWORDS, "" },
