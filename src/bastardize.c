@@ -1,6 +1,20 @@
 #include <Python.h>
 
 
+static PyObject *monkeypatch(PyObject *self, PyObject *args) {
+    PyObject *target;
+    PyObject *attr_name;
+    PyObject *attr_val;
+
+    if(!PyArg_ParseTuple(args, "OOO", &target, &attr_name, &attr_val))
+        return NULL;
+
+    _PyObject_GenericSetAttrWithDict(target, attr_name, attr_val, NULL);
+
+    Py_RETURN_NONE;
+}
+
+
 static PyObject *int_copy(PyObject *self, PyObject *obj) {
     if(Py_TYPE(obj) != &PyLong_Type) {
         PyErr_SetString(PyExc_TypeError, "ints only, please");
@@ -89,6 +103,7 @@ static PyObject *tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs
 }
 
 struct PyMethodDef methods[] = {
+    { "monkeypatch", monkeypatch, METH_VARARGS, "" },
     { "int_copy", int_copy, METH_O, "" },
     { "int_mutate", (PyCFunction)int_mutate, METH_VARARGS | METH_KEYWORDS, "" },
     { "tuple_set_item", (PyCFunction)tuple_set_item, METH_VARARGS | METH_KEYWORDS, "" },
