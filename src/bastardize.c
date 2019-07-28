@@ -25,9 +25,17 @@ static PyObject *int_copy(PyObject *self, PyObject *obj) {
 
     Py_ssize_t size = Py_SIZE(longobj);
 
-    PyLongObject *result = (PyLongObject *)_PyLong_New(size);
+    /*
+     * Python abuses the sign bit on PyVarObject's ob_size field to represent negative ints.
+     * The "size" variable above may actually be negative, confusing the audience...
+     * Do weird stuff here to deal with Python's weird stuff.
+     */
 
-    for(int i = 0; i < size; ++i) {
+    Py_ssize_t realsize = size < 0 ? (-size) : size;
+    PyLongObject *result = (PyLongObject *)_PyLong_New(realsize);
+
+    Py_SIZE(result) = Py_SIZE(longobj); /* copy the sign bit, not just the real size */
+    for(int i = 0; i < realsize; ++i) {
         result->ob_digit[i] = longobj->ob_digit[i];
     }
 

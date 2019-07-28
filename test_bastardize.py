@@ -28,6 +28,16 @@ def test_int_copy():
     assert not (newone is 1)
 
 
+def test_int_copy_neg():
+    """
+    Because Python has a weird representation for negative ints,
+    test this, too...
+    """
+    someneg = bastardize.int_copy(-10)
+    assert someneg == -10
+    assert not (someneg is -10)
+
+
 def test_int_mutate():
     one = bastardize.int_copy(1)
     assert one == 1
