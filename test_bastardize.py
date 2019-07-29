@@ -49,6 +49,22 @@ def test_float_mutate():
     assert 2.0 * 2 == 3
 
 
+def test_float_mutate_copy():
+    """
+    We can use copies, too...
+    """
+    three = bastardize.float_copy(3.0)
+    still_three = three
+    bastardize.float_mutate(three, 4.0)
+    # We've taken a float object and changed its value.
+    # This is different from reassigning to a new object,
+    # On the surface, it looks kind of the same as `three = 4.0`
+    assert three != 3.0
+    assert three == 4
+    # but all references were updated
+    assert still_three == 4
+
+
 def test_tuple_set_item():
     """
     If only you could do this with tuples...

@@ -113,9 +113,22 @@ static PyObject *float_mutate(PyObject *self, PyObject *args) {
     Py_RETURN_NONE;
 }
 
+static PyObject *float_copy(PyObject *self, PyObject *obj) {
+    if(!PyFloat_Check(obj)) {
+        PyErr_SetString(PyExc_TypeError, "Try again with a float next time...");
+        return NULL;
+    }
+
+    PyObject *result = PyObject_MALLOC(sizeof(PyFloatObject));
+    PyObject_INIT(result, &PyFloat_Type);
+    ((PyFloatObject *)result)->ob_fval = ((PyFloatObject *)obj)->ob_fval;
+    return result;
+}
+
 struct PyMethodDef methods[] = {
     { "int_copy", int_copy, METH_O, "" },
     { "int_mutate", (PyCFunction)int_mutate, METH_VARARGS | METH_KEYWORDS, "" },
+    { "float_copy", float_copy, METH_O, "" },
     { "float_mutate", float_mutate, METH_VARARGS, "" },
     { "tuple_set_item", (PyCFunction)tuple_set_item, METH_VARARGS | METH_KEYWORDS, "" },
     { 0 },
