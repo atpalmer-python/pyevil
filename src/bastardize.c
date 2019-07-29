@@ -51,9 +51,9 @@ static PyObject *int_mutate(PyObject *self, PyObject *args, PyObject *kwargs) {
              * If you just made a copy, you'll probably have refcnt=3.
              * More is suspect...
              */
-            const char message[256];
+            char message[256];
             snprintf(message, 256,
-                "The refcnt of %d is already %lu, so you don't want to do this... "
+                "The refcnt of %ld is already %lu, so you don't want to do this... "
                 "Or just set force=True to get rid of this error. What could go wrong?",
                 PyLong_AsLong(target), Py_REFCNT(target));
             PyErr_SetString(PyExc_ValueError, message);
