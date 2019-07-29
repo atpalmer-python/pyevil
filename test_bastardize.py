@@ -1,22 +1,4 @@
-import pytest
 import bastardize
-
-
-def test_monkeypatch():
-    """
-    Let's add some methods to statically-allocated types.
-    """
-    def rev_up(self):
-        return self[::-1].upper()
-    bastardize.monkeypatch(str, "rev_up", rev_up)
-    assert "abc".rev_up() == "CBA"
-
-    def upto(self, value):
-        return tuple(range(self, value + 1))
-    bastardize.monkeypatch(int, "upto", upto)
-    one = 1
-    ten = 10
-    assert one.upto(ten) == (1,2,3,4,5,6,7,8,9,10)
 
 
 def test_int_copy():
