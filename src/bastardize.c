@@ -96,9 +96,27 @@ static PyObject *tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs
     Py_RETURN_NONE;
 }
 
+static PyObject *float_mutate(PyObject *self, PyObject *args) {
+    PyObject *target;
+    double newval;
+
+    if(!PyArg_ParseTuple(args, "Od", &target, &newval))
+        return NULL;
+
+    if(!PyFloat_Check(target)) {
+        PyErr_SetString(PyExc_TypeError, "float_mutate needs a float");
+        return NULL;
+    }
+
+    ((PyFloatObject *)target)->ob_fval = newval;
+
+    Py_RETURN_NONE;
+}
+
 struct PyMethodDef methods[] = {
     { "int_copy", int_copy, METH_O, "" },
     { "int_mutate", (PyCFunction)int_mutate, METH_VARARGS | METH_KEYWORDS, "" },
+    { "float_mutate", float_mutate, METH_VARARGS, "" },
     { "tuple_set_item", (PyCFunction)tuple_set_item, METH_VARARGS | METH_KEYWORDS, "" },
     { 0 },
 };

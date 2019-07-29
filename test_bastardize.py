@@ -41,6 +41,14 @@ def test_evil_int_mutate():
     assert 400 + 400 != 800 # *evil laugh*
 
 
+def test_float_mutate():
+    """
+    Let's mess with floats, too.
+    """
+    bastardize.float_mutate(2.0, 1.5)
+    assert 2.0 * 2 == 3
+
+
 def test_tuple_set_item():
     """
     If only you could do this with tuples...
