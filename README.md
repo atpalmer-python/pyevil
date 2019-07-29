@@ -1,6 +1,6 @@
 # bastardize
 
-`400 + 400 != 800` and other Python evil...
+`400 + 400 != 800`, `2.0 * 2 == 3`, and other assorted evil...
 
 ## Installation
 
