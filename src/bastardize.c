@@ -34,7 +34,7 @@ static PyObject *int_mutate(PyObject *self, PyObject *args, PyObject *kwargs) {
     PyObject *newval;
     int force = 0;
 
-    static char *kwlist[] = { "target", "newval", "force" };
+    static char *kwlist[] = {"target", "newval", "force", NULL};
 
     if(!PyArg_ParseTupleAndKeywords(args, kwargs, "OO|$p", kwlist, &target, &newval, &force)) {
         return NULL;
@@ -74,7 +74,7 @@ static PyObject *tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs
     PyObject *value;
     int index;
 
-    static char *kwlist[] = {"tuple", "value", "index"};
+    static char *kwlist[] = {"tuple", "value", "index", NULL};
 
     if(!PyArg_ParseTupleAndKeywords(args, kwargs, "O|$Oi", kwlist, &tuple, &value, &index))
         return NULL;
