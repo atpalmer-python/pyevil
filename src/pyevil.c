@@ -92,12 +92,12 @@ tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs)
 
     /* temporarily spoof refcnt to beat PyTuple_SetItem sanity checking */
     Py_ssize_t refcnt = Py_REFCNT(tuple);
-    Py_REFCNT(tuple) = 1;
+    tuple->ob_refcnt = 1;
 
     PyTuple_SetItem(tuple, index, value);
     Py_INCREF(value);
 
-    Py_REFCNT(tuple) = refcnt;
+    tuple->ob_refcnt = refcnt;
 
     Py_RETURN_NONE;
 }
