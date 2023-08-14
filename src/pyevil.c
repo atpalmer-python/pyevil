@@ -136,12 +136,12 @@ struct PyMethodDef methods[] = {
 
 struct PyModuleDef module = {
     .m_base = PyModuleDef_HEAD_INIT,
-    .m_name = "bastardize",
+    .m_name = "pyevil",
     .m_doc = "",
     .m_size = 0,
     .m_methods = methods,
 };
 
-PyMODINIT_FUNC PyInit_bastardize(void) {
+PyMODINIT_FUNC PyInit_pyevil(void) {
     return PyModule_Create(&module);
 };

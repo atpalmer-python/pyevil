@@ -1,4 +1,4 @@
-# bastardize
+# Pyevil
 
 `400 + 400 != 800`, `2.0 * 2 == 3`, and other assorted evil...
 
