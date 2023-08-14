@@ -1,7 +1,9 @@
 #include <Python.h>
 
 
-static PyObject *int_copy(PyObject *self, PyObject *obj) {
+static PyObject *
+int_copy(PyObject *self, PyObject *obj)
+{
     if(Py_TYPE(obj) != &PyLong_Type) {
         PyErr_SetString(PyExc_TypeError, "ints only, please");
         return NULL;
@@ -29,7 +31,9 @@ static PyObject *int_copy(PyObject *self, PyObject *obj) {
 }
 
 
-static PyObject *int_mutate(PyObject *self, PyObject *args, PyObject *kwargs) {
+static PyObject *
+int_mutate(PyObject *self, PyObject *args, PyObject *kwargs)
+{
     PyObject *target;
     PyObject *newval;
     int force = 0;
@@ -69,7 +73,9 @@ static PyObject *int_mutate(PyObject *self, PyObject *args, PyObject *kwargs) {
     Py_RETURN_NONE;
 }
 
-static PyObject *tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs) {
+static PyObject *
+tuple_set_item(PyObject *self, PyObject *args, PyObject *kwargs)
+{
     PyObject *tuple;
     PyObject *value;
     int index;
